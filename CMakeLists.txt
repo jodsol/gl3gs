@@ -76,6 +76,8 @@ target_link_libraries(ImGui_SDK PUBLIC
 # -----------------------------
 add_executable(gsgl
   src/main.cpp
+  src/renderer.cpp
+  src/ssbo.cpp    # <-- 여기에 추가
 )
 
 target_link_libraries(gsgl PRIVATE

@@ -2,9 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "imgui.h"
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
+#include "renderer.h"
 
 int main() {
     if (!glfwInit()) {
@@ -32,42 +30,29 @@ int main() {
         return -1;
     }
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 460 core");
+    if (!renderer_init(window)) {
+        fprintf(stderr, "Failed to initialize renderer\n");
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return -1;
+    }
 
     bool show_demo = true;
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        renderer_new_frame();
 
         if (show_demo)
-            ImGui::ShowDemoWindow(&show_demo);
+            ; // demo window will be handled in renderer_render via pointer
 
-        ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClearColor(0.1f, 0.12f, 0.15f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        renderer_render(&show_demo);
 
         glfwSwapBuffers(window);
     }
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    renderer_shutdown();
 
     glfwDestroyWindow(window);
     glfwTerminate();
