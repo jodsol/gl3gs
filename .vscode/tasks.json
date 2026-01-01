@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "MSVC Env",
+      "type": "shell",
+      "command": "\"${env:ProgramFiles(x86)}\\Microsoft Visual Studio\\Installer\\vswhere.exe\" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath | %{ & \"$_\\Common7\\Tools\\VsDevCmd.bat\" -arch=x64 }",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "CMake Configure (Ninja + MSVC)",
+      "type": "shell",
+      "dependsOn": "MSVC Env",
+      "command": "cmake -S . -B build -G Ninja",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Build (Release)",
+      "type": "shell",
+      "command": "cmake --build build",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": ["$msCompile"]
+    }
+  ]
+}

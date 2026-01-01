@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "vector": "cpp",
+        "algorithm": "cpp",
+        "stdexcept": "cpp"
+    }
+    ,
+    "cmake.configureOnOpen": false,
+    "cmake.generator": "Visual Studio 17 2022",
+    "cmake.preferredGenerators": ["Ninja", "Unix Makefiles", "Visual Studio 17 2022"]
+}
