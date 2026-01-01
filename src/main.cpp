@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "graphics.h"
 #include "renderer.h"
 
 int main() {
@@ -30,8 +31,22 @@ int main() {
         return -1;
     }
 
-    if (!renderer_init(window)) {
+    float initial_colors[] = {
+        1.0f, 0.0f, 0.0f, 1.0f, // vertex 0
+        0.0f, 1.0f, 0.0f, 1.0f, // vertex 1
+        0.0f, 0.0f, 1.0f, 1.0f  // vertex 2
+    };
+
+    if (!graphics_init(initial_colors, sizeof(initial_colors))) {
+        fprintf(stderr, "Failed to initialize graphics\n");
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return -1;
+    }
+
+    if (!renderer_init(window, initial_colors, sizeof(initial_colors))) {
         fprintf(stderr, "Failed to initialize renderer\n");
+        graphics_shutdown();
         glfwDestroyWindow(window);
         glfwTerminate();
         return -1;
@@ -53,6 +68,7 @@ int main() {
     }
 
     renderer_shutdown();
+    graphics_shutdown();
 
     glfwDestroyWindow(window);
     glfwTerminate();

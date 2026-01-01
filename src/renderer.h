@@ -5,8 +5,9 @@
 struct GLFWwindow;
 
 // Initialize the renderer (ImGui + OpenGL backend). Pass the created GLFW window.
+// Optionally pass initial color data (array of vec4) which will be copied into the UI.
 // Returns true on success.
-bool renderer_init(GLFWwindow* window);
+bool renderer_init(GLFWwindow* window, const float* initial_colors, size_t byteSize);
 
 // Start a new ImGui frame (call once per loop before building UI).
 void renderer_new_frame();
